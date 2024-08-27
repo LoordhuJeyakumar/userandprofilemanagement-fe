@@ -6,6 +6,8 @@ import LoginPage from "../pages/LoginPage";
 import About from "../pages/About";
 import Dashboard from "../pages/Dashboard";
 import DashboardLayout from "../layouts/DashboardLayout";
+import Profile from "../pages/Profile";
+import EditProfile from "../pages/EditProfile";
 
 function AppRoutes() {
   return (
@@ -20,6 +22,8 @@ function AppRoutes() {
         {/* Dashboard layout */}
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
         </Route>
 
         {/* Catch-all route for 404 Not Found */}

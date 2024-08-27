@@ -11,7 +11,7 @@ function NavbarDashboard({ openSidebar }) {
               onClick={openSidebar}
             >
               {/* Menu Icon */}
-              <i class="bi bi-menu-button-wide"></i>
+              <i className="bi bi-menu-button-wide"></i>
             </button>
           </li>
         </ul>

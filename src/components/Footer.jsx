@@ -69,7 +69,7 @@ function Footer() {
                 tabIndex="0"
                 style={{ color: "white" }}
               >
-                <i class="bi bi-globe"></i>
+                <i className="bi bi-globe"></i>
               </a>
             </div>
           </div>
