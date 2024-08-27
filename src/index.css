@@ -3588,3 +3588,28 @@ fieldset:disabled .btn {
 .settingsNav .nav-link:hover{
   background-color: var(--bs-link-hover-color-rgb);
 }
+
+
+/* Custom Styles for Redirect Page */
+.redirect .spinner-icon {
+  font-size: 3rem;
+  animation: spin 2s linear infinite;
+  color: #007bff;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.redirect .text-center {
+  color: #333;
+}
+
+.redirect.bg-light {
+  background-color: #f8f9fa;
+}

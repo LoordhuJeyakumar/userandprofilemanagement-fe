@@ -9,6 +9,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Profile from "../pages/Profile";
 import EditProfile from "../pages/EditProfile";
 import VerifyEmailPage from "../pages/VerifyEmailPage";
+import RedirectPage from "../pages/RedirectPage";
 
 function AppRoutes() {
   return (
@@ -30,6 +31,8 @@ function AppRoutes() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/edit-profile" element={<EditProfile />} />
         </Route>
+
+        <Route path="/redirect" element={<RedirectPage />} />
 
         {/* Catch-all route for 404 Not Found */}
         {/* <Route path="*" element={<NotFound />} /> */}
