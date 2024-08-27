@@ -8,6 +8,7 @@ import Dashboard from "../pages/Dashboard";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Profile from "../pages/Profile";
 import EditProfile from "../pages/EditProfile";
+import VerifyEmailPage from "../pages/VerifyEmailPage";
 
 function AppRoutes() {
   return (
@@ -17,6 +18,10 @@ function AppRoutes() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/about" element={<About />} />
+          <Route
+            path="/verify-email/:id/:token"
+            element={<VerifyEmailPage />}
+          />
         </Route>
 
         {/* Dashboard layout */}

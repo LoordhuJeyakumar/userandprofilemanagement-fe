@@ -1,5 +1,7 @@
 //handle error
 export const handleError = (error) => {
+  console.log(error);
+  
   if (error.response) {
     // Server responded with a status other than 200 range
     console.error(

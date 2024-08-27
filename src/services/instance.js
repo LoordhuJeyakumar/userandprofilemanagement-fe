@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const isDeployed = false;
-const baseUrl = isDeployed ? "" : "http://localhost:3000/api/v1/";
+const baseURL = isDeployed ? "" : "http://localhost:3000/api/v1/";
 
 const authInstance = axios.create({
   baseURL: baseURL,
@@ -21,7 +21,7 @@ const protectedInstance = axios.create({
 
 protectedInstance.interceptors.request.use(
   (config) => {
-    const accessToken = sessionStorage.getItem("token");
+    const accessToken = localStorage.getItem("token");
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -31,4 +31,4 @@ protectedInstance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-export { authInstance, protectedInstance, baseUrl };
+export { authInstance, protectedInstance, baseURL };
