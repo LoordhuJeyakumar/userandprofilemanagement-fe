@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-const getRandomId = () => {
-  return Math.floor(Math.random() * 100) + 1;
-};
+import { getRandomId } from "../../utils/helper";
+
 
 // Sample online avatars generated using avatar-placeholder
 const preLoadedImages = [
