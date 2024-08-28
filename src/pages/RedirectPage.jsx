@@ -7,8 +7,8 @@ const RedirectPage = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      //navigate("/target-page"); // Replace with your target path
-    }, 5000); // Redirect after 5 seconds
+      navigate("/dashboard"); // Replace with your target path
+    }, 3000); // Redirect after 5 seconds
 
     return () => clearTimeout(timer);
   }, [navigate]);

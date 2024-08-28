@@ -1,6 +1,17 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../services/userService";
 
 function NavbarDashboard({ openSidebar }) {
+  const navigate = useNavigate();
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log(user);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login  ");
+  };
   return (
     <header className="app-header">
       <nav className="navbar navbar-expand-lg navbar-light ">
@@ -20,11 +31,16 @@ function NavbarDashboard({ openSidebar }) {
           className="navbar-collapse justify-content-end px-0 "
           id="navbarNav"
         >
-          <h3 className="text-center w-100">Welcome Back, John Doe! &nbsp;</h3>
+          <h3 className="text-center w-100">
+            Welcome Back, {user.username}! &nbsp;
+          </h3>
 
           <ul className="navbar-nav flex-row ms-auto align-items-center justify-content-end">
             <li className="nav-item dropdown">
-              <button className="btn btn-secondary btn-sm btn-rounded d-flex align-items-center me-3 fw-bold ">
+              <button
+                className="btn btn-secondary btn-sm btn-rounded d-flex align-items-center me-3 fw-bold "
+                onClick={handleLogout}
+              >
                 Logout &nbsp; <i className="bi bi-box-arrow-right"></i>
               </button>
             </li>

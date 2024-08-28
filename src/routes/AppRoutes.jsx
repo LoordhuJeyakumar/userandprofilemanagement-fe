@@ -10,11 +10,25 @@ import Profile from "../pages/Profile";
 import EditProfile from "../pages/EditProfile";
 import VerifyEmailPage from "../pages/VerifyEmailPage";
 import RedirectPage from "../pages/RedirectPage";
+import NotFoundPage from "../pages/NotFoundPage";
+import ProtectedRoute from "./ProtectedRoute";
 
 function AppRoutes() {
+  const token = localStorage.getItem("token");
+
   return (
     <Router>
       <Routes>
+        {/* Protected routes */}
+        {/* Dashboard layout */}
+        <Route element={<ProtectedRoute />}>
+          <Route element={<DashboardLayout />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/edit-profile" element={<EditProfile />} />
+          </Route>
+        </Route>
         <Route element={<HomeLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -25,17 +39,8 @@ function AppRoutes() {
           />
         </Route>
 
-        {/* Dashboard layout */}
-        <Route element={<DashboardLayout />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/edit-profile" element={<EditProfile />} />
-        </Route>
-
         <Route path="/redirect" element={<RedirectPage />} />
-
-        {/* Catch-all route for 404 Not Found */}
-        {/* <Route path="*" element={<NotFound />} /> */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   );

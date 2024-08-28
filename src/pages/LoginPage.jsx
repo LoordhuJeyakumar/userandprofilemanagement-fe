@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -14,6 +14,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   const { status, error } = useSelector((state) => state.user);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Validation schema using Yup
   const validationSchema = Yup.object({
@@ -24,7 +25,8 @@ const LoginPage = () => {
   });
 
   // Handle form submission
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    setIsSubmitted(true);
     try {
       dispatch(setStatus("loading"));
       // Replace with your actual login API request
@@ -32,19 +34,34 @@ const LoginPage = () => {
       console.log(response);
 
       if (response.success) {
-        toast.success(response.data.message)
-        dispatch(setUserData(response.data.data));
+        toast.success(response.data.data.message);
+        dispatch(setUserData(response.data.data.message));
         dispatch(setStatus("succeeded"));
-        //navigate("/dashboard");
+        navigate("/redirect");
+        setIsSubmitted(false);
       } else {
-        dispatch(setError(response.message));
+        if (response.error.code === "ERR_NETWORK") {
+          dispatch(setError(response.error.message));
+          toast.error(response.error.message);
+          resetForm();
+          setIsSubmitted(false);
+          return;
+        }
+        dispatch(setError(response.error.response.data.error));
+        toast.error(response.error.response.data.error);
         dispatch(setStatus("failed"));
+        setIsSubmitted(false);
+        resetForm();
       }
     } catch (err) {
       dispatch(setError("Invalid credentials"));
       dispatch(setStatus("failed"));
+      toast.error("Invalid credentials");
+      setIsSubmitted(false);
+      resetForm();
     } finally {
       setSubmitting(false);
+      resetForm();
     }
   };
 
@@ -75,6 +92,7 @@ const LoginPage = () => {
                         className="form-control"
                         id="email"
                         placeholder="Enter Email"
+                        autoComplete=""
                       />
                       <ErrorMessage
                         name="email"
@@ -92,6 +110,7 @@ const LoginPage = () => {
                         className="form-control"
                         id="password"
                         placeholder="Enter Password"
+                        autoComplete=""
                       />
                       <ErrorMessage
                         name="password"
@@ -110,11 +129,13 @@ const LoginPage = () => {
                     <button
                       type="submit"
                       className="btn btn-primary w-100 mb-4 signin-btn"
-                      disabled={isSubmitting || status === "loading"}
+                      disabled={isSubmitting}
                     >
-                      {isSubmitting || status === "loading"
-                        ? "Signing In..."
-                        : "Sign In"}
+                      Sign in{" "}
+                      <i className="fa fa-sign-in" aria-hidden="true"></i>
+                      {isSubmitted && (
+                        <span className="spinner-border spinner-border-sm ms-2"></span>
+                      )}
                     </button>
                     {error && (
                       <div className="text-danger text-center">{error}</div>
@@ -148,19 +169,6 @@ const LoginPage = () => {
       </div>
     </div>
   );
-};
-
-// Replace this function with your actual API call
-const fakeApiLogin = (email, password) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (email === "test@example.com" && password === "password") {
-        resolve({ data: { id: 1, name: "Test User", email } });
-      } else {
-        reject(new Error("Invalid credentials"));
-      }
-    }, 1000);
-  });
 };
 
 export default LoginPage;

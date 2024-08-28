@@ -1,29 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProfilePicture from "../components/ProfilePicture";
 import { Link } from "react-router-dom";
-
-const getRandomId = () => {
-  return Math.floor(Math.random() * 100) + 1;
-};
-
-// Sample online avatars generated using avatar-placeholder
-const preLoadedImages = [
-  `https://avatar.iran.liara.run/public/${getRandomId()}`,
-  `https://avatar.iran.liara.run/public/${getRandomId()}`,
-  `https://avatar.iran.liara.run/public/${getRandomId()}`,
-  `https://avatar.iran.liara.run/public/${getRandomId()}`,
-  `https://avatar.iran.liara.run/public/${getRandomId()}`,
-  `https://avatar.iran.liara.run/public/${getRandomId()}`,
-  `https://avatar.iran.liara.run/public/${getRandomId()}`,
-];
+import { getUerDetails } from "../services/userService";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserData } from "../redux/slices/userSlice";
 
 const Dashboard = () => {
-  const [profilePicture, setProfilePicture] = useState(preLoadedImages[0]);
+  const dispatch = useDispatch();
+  const { userData } = useSelector((state) => state.user);
+  console.log(userData);
 
-  const handleUpdatePicture = (newPicture) => {
-    setProfilePicture(newPicture);
-    // Optionally, send the new picture to your backend for saving
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const getUser = async () => {
+    try {
+      const res = await getUerDetails();
+      console.log(res);
+      if (res.success) {
+        dispatch(setUserData(res.data.data.user));
+      }
+    } catch (error) {
+      console.log(error);
+      return;
+    }
   };
+
+  const getProfile  = async () => {};
 
   return (
     <div className="container card p-5">
@@ -38,7 +42,7 @@ const Dashboard = () => {
             <strong>Name:</strong> [First Name] [Last Name]
           </p>
           <p>
-            <strong>Email:</strong> [User's Email]
+            <strong>Email:</strong> {userData.email}
           </p>
           <p>
             <strong>Phone Number:</strong> [Phone Number]

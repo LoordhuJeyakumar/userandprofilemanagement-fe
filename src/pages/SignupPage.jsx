@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { setUserData } from "../redux/slices/userSlice";
+import { setSignupData } from "../redux/slices/userSlice";
 import { register } from "../services/userService";
 import { toast } from "react-toastify";
 
 function SignupPage() {
   const dispatch = useDispatch();
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const { userData } = useSelector((state) => state.user);
+  const { signupData } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const validationSchema = Yup.object({
     username: Yup.string().required("Username is required"),
@@ -22,7 +22,7 @@ function SignupPage() {
       .min(5, "Password must be at least 5 characters")
       .required("Password is required"),
   });
-  console.log(userData);
+  console.log(signupData);
 
   const initialValues = {
     username: "",
@@ -33,7 +33,7 @@ function SignupPage() {
   const handleSignupSubmit = async (values, { resetForm }) => {
     setIsSubmitted(true);
     // Dispatch the form data to Redux store
-    dispatch(setUserData(values));
+    dispatch(setSignupData(values));
 
     try {
       const res = await register(values);
@@ -45,6 +45,7 @@ function SignupPage() {
 
         setIsSubmitted(false);
         toast.success(res.data.data.message);
+        setSignupData(res.data.data);
         setTimeout(() => {
           navigate("/login");
         }, 2000);

@@ -3613,3 +3613,38 @@ fieldset:disabled .btn {
 .redirect.bg-light {
   background-color: #f8f9fa;
 }
+
+
+/* 404 Page */
+
+/* Custom Styles for 404 Page */
+.notfound .error-icon {
+  font-size: 3rem;
+  color: #dc3545;
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.notfound .text-center {
+  color: #333;
+}
+
+.notfound.bg-light {
+  background-color: #f8f9fa;
+}
+
+.notfound h1.display-1 {
+  font-size: 6rem;
+}
+
+.notfound h2 {
+  font-size: 2rem;
+}

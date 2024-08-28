@@ -32,6 +32,12 @@ function NavbarHome() {
               </NavLink>
             </li>
             <li className="nav-item">
+              <NavLink className="nav-link" to="/dashboard">
+                Dashboard &nbsp;
+                <i className="fa fa-tachometer" aria-hidden="true"></i>
+              </NavLink>
+            </li>
+            <li className="nav-item">
               <NavLink className="nav-link" to="/about">
                 About &nbsp;
                 <i className="fa fa-info-circle" aria-hidden="true"></i>

@@ -6,6 +6,8 @@ const userSlice = createSlice({
     userData: null,
     status: "idle",
     error: null,
+    signupData: null,
+    signinData: null,
   },
   reducers: {
     setUserData(state, action) {
@@ -17,8 +19,20 @@ const userSlice = createSlice({
     setError(state, action) {
       state.error = action.payload;
     },
+    setSignupData(state, action) {
+      state.signupData = action.payload;
+    },
+    setSigninData(state, action) {
+      state.signinData = action.payload;
+    },
   },
 });
 
-export const { setUserData, setStatus, setError } = userSlice.actions;
+export const {
+  setUserData,
+  setStatus,
+  setError,
+  setSignupData,
+  setSigninData,
+} = userSlice.actions;
 export default userSlice.reducer;
