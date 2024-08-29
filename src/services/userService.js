@@ -67,3 +67,54 @@ export const getUerDetails = async () => {
     return { success: false, error: error };
   }
 };
+
+//Update User
+export const updateUser = async (userData) => {
+  try {
+    const response = await protectedInstance.put("/user/updateUser", userData);
+    return { success: true, data: response };
+  } catch (error) {
+    handleError(error);
+    return { success: false, error: error };
+  }
+};
+
+//Change Password
+export const changePassword = async (userData) => {
+  try {
+    const response = await protectedInstance.put(
+      "/user/changePassword",
+      userData
+    );
+    return { success: true, data: response };
+  } catch (error) {
+    handleError(error);
+    return { success: false, error: error };
+  }
+};
+
+//Deactivate User
+export const deactivateUser = async () => {
+  try {
+    const response = await protectedInstance.put(
+      "/user/deactivateUser",
+    );
+    return { success: true, data: response };
+  } catch (error) {
+    handleError(error);
+    return { success: false, error: error };
+  }
+};
+
+//Delete User and Profile
+export const deleteUserAndProfile = async () => {
+  try {
+    const response = await protectedInstance.delete(
+      "/user/deleteUserAndProfile",
+    );
+    return { success: true, data: response };
+  } catch (error) {
+    handleError(error);
+    return { success: false, error: error };
+  }
+};

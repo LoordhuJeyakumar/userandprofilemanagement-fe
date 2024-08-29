@@ -28,7 +28,7 @@ const Profile = () => {
     }
   }
 
-  if (!profileData) {
+  /* if (!profileData) {
     return (
       <div className="w-100 vh-100 d-flex justify-content-center align-items-center">
         <lord-icon
@@ -40,7 +40,7 @@ const Profile = () => {
         <h1>Loading...</h1>
       </div>
     );
-  }
+  } */
 
   return (
     <div className="profile-container">
@@ -68,7 +68,7 @@ const Profile = () => {
             <p>
               <strong>Last Name:</strong>{" "}
               {profileData?.lastName || (
-                <span class="badge rounded-pill text-bg-secondary">
+                <span className="badge rounded-pill text-bg-secondary">
                   Not Found
                 </span>
               )}
@@ -76,7 +76,7 @@ const Profile = () => {
             <p>
               <strong>Date of Birth:</strong>{" "}
               {profileData?.dateOfBirth || (
-                <span class="badge rounded-pill text-bg-secondary">
+                <span className="badge rounded-pill text-bg-secondary">
                   Not Found
                 </span>
               )}
@@ -84,7 +84,7 @@ const Profile = () => {
             <p>
               <strong>Gender:</strong>{" "}
               {profileData?.gender || (
-                <span class="badge rounded-pill text-bg-secondary">
+                <span className="badge rounded-pill text-bg-secondary">
                   Not Found
                 </span>
               )}
@@ -104,7 +104,7 @@ const Profile = () => {
             <p>
               <strong>Phone Number:</strong>{" "}
               {profileData?.phoneNumber || (
-                <span class="badge rounded-pill text-bg-secondary">
+                <span className="badge rounded-pill text-bg-secondary">
                   Not Found
                 </span>
               )}
@@ -112,7 +112,7 @@ const Profile = () => {
             <p>
               <strong>Address:</strong>{" "}
               {profileData?.address || (
-                <span class="badge rounded-pill text-bg-secondary">
+                <span className="badge rounded-pill text-bg-secondary">
                   Not Found
                 </span>
               )}

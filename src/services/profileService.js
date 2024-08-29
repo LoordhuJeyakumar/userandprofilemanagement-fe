@@ -4,7 +4,7 @@ import { protectedInstance } from "./instance";
 export const getProfileDetails = async () => {
   try {
     const response = await protectedInstance.get("/profile/getProfile");
-    return { sucess: true, data: response };
+    return { success: true, data: response };
   } catch (error) {
     console.log(error);
     handleError(error);
