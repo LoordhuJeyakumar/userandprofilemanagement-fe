@@ -4,20 +4,23 @@ import { Link } from "react-router-dom";
 import { getUerDetails } from "../services/userService";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "../redux/slices/userSlice";
+import { setProfileData } from "../redux/slices/profileSlice";
+import { getProfileDetails } from "../services/profileService";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.user);
-  console.log(userData);
+  const { profileData } = useSelector((state) => state.profile);
 
   useEffect(() => {
     getUser();
+    getProfile();
   }, []);
 
   const getUser = async () => {
     try {
       const res = await getUerDetails();
-      console.log(res);
+
       if (res.success) {
         dispatch(setUserData(res.data.data.user));
       }
@@ -27,7 +30,18 @@ const Dashboard = () => {
     }
   };
 
-  const getProfile  = async () => {};
+  const getProfile = async () => {
+    try {
+      const res = await getProfileDetails();
+
+      if (res.success) {
+        dispatch(setProfileData(res.data.data.profile));
+      }
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  };
 
   return (
     <div className="container card p-5">
@@ -37,18 +51,38 @@ const Dashboard = () => {
 
       <div className="row mt-4">
         <div className="col-md-6">
-          <h4>Your Profile</h4>
+          <h3 className="mb-3 border-bottom fw-bolder">Your Profile</h3>
           <p>
-            <strong>Name:</strong> [First Name] [Last Name]
+            <strong>Name:</strong>{" "}
+            {profileData?.firstName + " " + profileData?.lastName || (
+              <span className="badge rounded-pill text-bg-secondary">
+                Not Found
+              </span>
+            )}
           </p>
           <p>
-            <strong>Email:</strong> {userData.email}
+            <strong>Email:</strong>{" "}
+            {userData?.email || (
+              <span className="badge rounded-pill text-bg-secondary">
+                Not Found
+              </span>
+            )}
           </p>
           <p>
-            <strong>Phone Number:</strong> [Phone Number]
+            <strong>Phone Number:</strong>{" "}
+            {profileData?.phoneNumber || (
+              <span className="badge rounded-pill text-bg-secondary">
+                Not Found
+              </span>
+            )}
           </p>
           <p>
-            <strong>Gender:</strong> [Gender]
+            <strong>Gender:</strong>{" "}
+            {profileData?.gender || (
+              <span className="badge rounded-pill text-bg-secondary">
+                Not Found
+              </span>
+            )}
           </p>
 
           <Link to={"/profile"} className="btn btn-secondary">

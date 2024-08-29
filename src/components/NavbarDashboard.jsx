@@ -6,7 +6,7 @@ function NavbarDashboard({ openSidebar }) {
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log(user);
+
 
   const handleLogout = () => {
     logout();

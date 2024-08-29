@@ -3648,3 +3648,7 @@ fieldset:disabled .btn {
 .notfound h2 {
   font-size: 2rem;
 }
+
+.img-thumbnail.selected {
+  border: 2px solid blue; 
+}

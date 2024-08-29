@@ -36,9 +36,10 @@ const initialProfile = {
 const profileSlice = createSlice({
   name: "profile",
   initialState: {
-    profileData: initialProfile || null,
+    profileData: null,
     status: "idle",
     error: null,
+    preLoadedImages: preLoadedImages,
   },
   reducers: {
     setProfileData(state, action) {

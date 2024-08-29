@@ -22,7 +22,7 @@ function SignupPage() {
       .min(5, "Password must be at least 5 characters")
       .required("Password is required"),
   });
-  console.log(signupData);
+
 
   const initialValues = {
     username: "",
@@ -38,10 +38,10 @@ function SignupPage() {
     try {
       const res = await register(values);
 
-      console.log(res);
+     
 
       if (res.success) {
-        console.log(res.data);
+      
 
         setIsSubmitted(false);
         toast.success(res.data.data.message);

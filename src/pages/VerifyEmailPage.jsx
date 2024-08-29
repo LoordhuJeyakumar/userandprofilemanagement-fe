@@ -12,8 +12,7 @@ function VerifyEmailPage() {
   const [successMessage, setSuccessMessage] = useState("");
   const params = useParams();
   const { id, token } = params;
-  console.log("id", id);
-  console.log("token", token);
+
 
   useEffect(() => {
     verifyEmailToken();
@@ -36,7 +35,7 @@ function VerifyEmailPage() {
         );
         setTimeout(() => navigate("/login"), 3000); // Redirect after a short delay
       } else {
-        console.log(res);
+       
         setSuccessMessage("");
         setErrorMessage(res.error.response.data.error);
         toast.error(res.error.response.data.error);

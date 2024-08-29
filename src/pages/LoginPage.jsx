@@ -31,7 +31,7 @@ const LoginPage = () => {
       dispatch(setStatus("loading"));
       // Replace with your actual login API request
       const response = await login(values);
-      console.log(response);
+
 
       if (response.success) {
         toast.success(response.data.data.message);

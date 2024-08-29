@@ -1,58 +1,54 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import axios from "axios";
+import { Link } from "react-router-dom";
 import ProfilePicture from "../components/ProfilePicture";
-import { useSelector } from "react-redux";
-const sampleProfile = {
-  firstName: "John",
-  lastName: "Doe",
-  phoneNumber: "123-456-7890",
-  gender: "male",
-  profilePicture: "",
-  dateOfBirth: "1990-01-01",
-  address: "123 Main St, Anytown, USA",
-  userId: 1,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  user: {
-    username: "johndoe",
-    email: "johndoe@example.com",
-    password: "securepassword123",
-    role: "user",
-    isActive: true,
-    isVerified: false,
-  },
-};
-const Profile = () => {
-  const { userId } = useParams();
+import { useDispatch, useSelector } from "react-redux";
+import { getProfileDetails } from "../services/profileService";
+import { setProfileData } from "../redux/slices/profileSlice";
 
+const Profile = () => {
   const { profileData } = useSelector((state) => state.profile);
-  const [profile, setProfile] = useState(profileData);
-  console.log(profileData);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    // Fetch profile data
-    axios
-      .get(`/api/profile/${userId}`)
-      .then((response) => {
-        setProfile(sampleProfile);
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the profile data!", error);
-      });
-  }, [userId]);
+    if (!profileData) {
+      getProfile();
+    }
+  }, [profileData]);
 
-  if (!profile) {
-    return <div>Loading...</div>;
+  async function getProfile() {
+    try {
+      const res = await getProfileDetails();
+
+      if (res.success) {
+        dispatch(setProfileData(res.data.data.profile));
+      }
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  }
+
+  if (!profileData) {
+    return (
+      <div className="w-100 vh-100 d-flex justify-content-center align-items-center">
+        <lord-icon
+          src="https://cdn.lordicon.com/afixdwmd.json"
+          trigger="loop"
+          state="loop-cycle"
+          style={{ width: "150px", height: "150px" }}
+        ></lord-icon>
+        <h1>Loading...</h1>
+      </div>
+    );
   }
 
   return (
     <div className="profile-container">
-      <h1>Your Profile</h1>
+      <h1 className="">Your Profile</h1>
       <div className="profile-card card flex-column">
         <div className="profile-header">
           <h2>
-            {profile.firstName} {profile.lastName}
+            {profileData?.firstName} {profileData?.lastName}
           </h2>
 
           <ProfilePicture />
@@ -67,16 +63,31 @@ const Profile = () => {
               </Link>{" "}
             </h3>
             <p>
-              <strong>First Name:</strong> {profile.firstName}
+              <strong>First Name:</strong> {profileData?.firstName}
             </p>
             <p>
-              <strong>Last Name:</strong> {profile.lastName}
+              <strong>Last Name:</strong>{" "}
+              {profileData?.lastName || (
+                <span class="badge rounded-pill text-bg-secondary">
+                  Not Found
+                </span>
+              )}
             </p>
             <p>
-              <strong>Date of Birth:</strong> {profile.dateOfBirth || "N/A"}
+              <strong>Date of Birth:</strong>{" "}
+              {profileData?.dateOfBirth || (
+                <span class="badge rounded-pill text-bg-secondary">
+                  Not Found
+                </span>
+              )}
             </p>
             <p>
-              <strong>Gender:</strong> {profile.gender || "N/A"}
+              <strong>Gender:</strong>{" "}
+              {profileData?.gender || (
+                <span class="badge rounded-pill text-bg-secondary">
+                  Not Found
+                </span>
+              )}
             </p>
           </div>
 
@@ -88,13 +99,23 @@ const Profile = () => {
               </Link>
             </h3>
             <p>
-              <strong>Email:</strong> {profile.user.email}
+              <strong>Email:</strong> {profileData?.User?.email}
             </p>
             <p>
-              <strong>Phone Number:</strong> {profile.phoneNumber || "N/A"}
+              <strong>Phone Number:</strong>{" "}
+              {profileData?.phoneNumber || (
+                <span class="badge rounded-pill text-bg-secondary">
+                  Not Found
+                </span>
+              )}
             </p>
             <p>
-              <strong>Address:</strong> {profile.address}
+              <strong>Address:</strong>{" "}
+              {profileData?.address || (
+                <span class="badge rounded-pill text-bg-secondary">
+                  Not Found
+                </span>
+              )}
             </p>
           </div>
 
@@ -106,18 +127,34 @@ const Profile = () => {
               </Link>
             </h3>
             <p>
-              <strong>Username:</strong> {profile.user.username}
+              <strong>Username:</strong> {profileData?.User?.username}
             </p>
             <p>
-              <strong>Role:</strong> {profile.user.role}
+              <strong>Role:</strong> {profileData?.User?.role}
             </p>
             <p>
               <strong>Account Status:</strong>{" "}
-              {profile.user.isActive ? "Active" : "Inactive"}
+              {profileData?.User?.isActive ? (
+                <span className="badge rounded-pill text-bg-success">
+                  Active
+                </span>
+              ) : (
+                <span className="badge rounded-pill text-bg-danger">
+                  Inactive
+                </span>
+              )}
             </p>
             <p>
               <strong>Email Verified:</strong>{" "}
-              {profile.user.isVerified ? "Yes" : "No"}
+              {profileData?.User?.isVerified ? (
+                <span className="badge rounded-pill text-bg-success">
+                  Verified
+                </span>
+              ) : (
+                <span className="badge rounded-pill text-bg-danger">
+                  Not Verified
+                </span>
+              )}
             </p>
           </div>
         </div>
