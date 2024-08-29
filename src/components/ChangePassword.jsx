@@ -5,39 +5,7 @@ import { Formik } from "formik";
 import { changePassword } from "../services/userService";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
-const RedirectTo = ({ countDown, redirectPage }) => {
-  const navigate = useNavigate();
-  const [count, setCount] = useState(countDown);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCount((prevCount) => prevCount - 1);
-    }, 1000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (count === 0) {
-      navigate(redirectPage);
-    }
-  }, [count, navigate, redirectPage]);
-
-  return (
-    <div>
-      <p>
-        You will be redirected to the login page in {count} seconds. If not
-        redirected, click{" "}
-        <a href={redirectPage} className="text-primary">
-          here
-        </a>
-      </p>
-    </div>
-  );
-};
+import RedirectTo from "./RedirectTo";
 
 function ChangePassword() {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -114,6 +82,7 @@ function ChangePassword() {
                       name="currentPassword"
                       value={values.currentPassword}
                       onChange={handleChange}
+                      autoComplete="off"
                     />
                     {errors.currentPassword && touched.currentPassword && (
                       <div className="text-danger">
@@ -133,6 +102,7 @@ function ChangePassword() {
                       name="newPassword"
                       value={values.newPassword}
                       onChange={handleChange}
+                      autoComplete="off"
                     />
                     {errors.newPassword && touched.newPassword && (
                       <div className="text-danger">{errors.newPassword}</div>
@@ -151,6 +121,7 @@ function ChangePassword() {
                       name="confirmNewPassword"
                       value={values.confirmNewPassword}
                       onChange={handleChange}
+                      autoComplete="off"
                     />
                     {errors.confirmNewPassword &&
                       touched.confirmNewPassword && (
@@ -172,14 +143,18 @@ function ChangePassword() {
                     (successMessage && (
                       <div className="alert alert-success" role="alert">
                         {successMessage}
-                        <RedirectTo countDown={5} redirectPage={"/login"} />
+                        <RedirectTo
+                          countDown={5}
+                          redirectPage={"/login"}
+                          pageName={"Login"}
+                        />
                       </div>
                     ))
                 }
                 <div className="d-flex justify-content-end">
                   <button type="submit" className="btn btn-primary">
                     Change Password &nbsp;
-                    <i class="fa fa-unlock" aria-hidden="true"></i>
+                    <i className="fa fa-unlock" aria-hidden="true"></i>
                     &nbsp;
                     {isSubmitted ? (
                       <span

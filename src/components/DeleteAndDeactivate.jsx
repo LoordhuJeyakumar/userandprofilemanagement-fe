@@ -1,5 +1,7 @@
 import { useState } from "react";
 import React from "react";
+import { deactivateUser, logout } from "../services/userService";
+import RedirectTo from "./RedirectTo";
 
 function DeleteAndDeactivate() {
   const [isDeactivatetStart, setIsDeactivateStart] = useState(false);
@@ -11,7 +13,45 @@ function DeleteAndDeactivate() {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  const handleDeactivate = async () => {};
+  const handleDeactivate = async () => {
+    setIsDeactivateStart(true);
+    setIsDeactivateError(false);
+    setIsDeactivateSuccess(false);
+    setErrorMessage("");
+    setSuccessMessage("");
+    try {
+      const response = await deactivateUser();
+      console.log(response);
+
+      if (response.success) {
+        //navigate to home page and Reloade the page
+
+        setIsDeactivateSuccess(true);
+        setSuccessMessage(response.data.data.message);
+        setIsDeactivateStart(false);
+
+        logout();
+
+        // Close the modal after 5 seconds
+        setTimeout(() => {
+          const modalElement = document.getElementById("handleDeactivateModal");
+          const modalInstance = bootstrap.Modal.getInstance(modalElement);
+          if (modalInstance) {
+            modalInstance.hide();
+          }
+          window.location.reload();
+        }, 5500);
+      } else {
+        setIsDeactivateError(true);
+        setErrorMessage(response.error.response.data.error);
+        setIsDeactivateStart(false);
+      }
+    } catch (error) {
+      setIsDeactivateError(true);
+      setErrorMessage(error.response.data.message);
+      setIsDeactivateStart(false);
+    }
+  };
   const handleDeletAccount = async () => {};
 
   return (
@@ -75,6 +115,8 @@ function DeleteAndDeactivate() {
                 again. Please be certain.
               </p>
             </div>
+            {/* <!-- Modal footer --> */}
+
             <div className="modal-footer p-3 d-flex justify-content-evenly">
               <button
                 type="button"
@@ -89,8 +131,37 @@ function DeleteAndDeactivate() {
                 onClick={handleDeactivate}
               >
                 Yes{" "}
+                {isDeactivatetStart && (
+                  <div
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                  >
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                )}
               </button>
             </div>
+            {/* <!-- Modal footer --> */}
+            <div data-bs-theme="dark">
+              {isDeactivateError && (
+                <div className="alert alert-danger mt-3 " role="alert">
+                  {errorMessage}
+                </div>
+              )}
+              {isDeactivateSuccess && (
+                <>
+                  <div className="alert alert-success mt-3" role="alert">
+                    {successMessage}
+                  </div>
+                  <RedirectTo
+                    countDown={5}
+                    pageName={"Home"}
+                    redirectPage={"/"}
+                  />
+                </>
+              )}
+            </div>
+            {/* <!-- Modal footer --> */}
           </div>
         </div>
       </div>
