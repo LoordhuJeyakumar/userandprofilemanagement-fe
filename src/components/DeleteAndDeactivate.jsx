@@ -1,7 +1,12 @@
 import { useState } from "react";
 import React from "react";
-import { deactivateUser, logout } from "../services/userService";
+import {
+  deactivateUser,
+  deleteUserAndProfile,
+  logout,
+} from "../services/userService";
 import RedirectTo from "./RedirectTo";
+import { toast } from "react-toastify";
 
 function DeleteAndDeactivate() {
   const [isDeactivatetStart, setIsDeactivateStart] = useState(false);
@@ -29,6 +34,7 @@ function DeleteAndDeactivate() {
         setIsDeactivateSuccess(true);
         setSuccessMessage(response.data.data.message);
         setIsDeactivateStart(false);
+        toast.success(response.data.data.message);
 
         logout();
 
@@ -45,14 +51,56 @@ function DeleteAndDeactivate() {
         setIsDeactivateError(true);
         setErrorMessage(response.error.response.data.error);
         setIsDeactivateStart(false);
+        toast.error(response.error.response.data.error);
       }
     } catch (error) {
       setIsDeactivateError(true);
       setErrorMessage(error.response.data.message);
       setIsDeactivateStart(false);
+      toast.error(error.response.data.message);
     }
   };
-  const handleDeletAccount = async () => {};
+  const handleDeletAccount = async () => {
+    setIsDeleteStart(true);
+    setIsDeleteError(false);
+    setIsDeleteSuccess(false);
+    setErrorMessage("");
+    setSuccessMessage("");
+    try {
+      const response = await deleteUserAndProfile();
+      console.log(response);
+
+      if (response.success) {
+        //navigate to home page and Reloade the page
+        setIsDeleteSuccess(true);
+        setSuccessMessage(response.data.data.message);
+        setIsDeleteStart(false);
+        toast.success(response.data.data.message);
+
+        logout();
+
+        // Close the modal after 5 seconds
+        setTimeout(() => {
+          const modalElement = document.getElementById("handleDeleteModal");
+          const modalInstance = bootstrap.Modal.getInstance(modalElement);
+          if (modalInstance) {
+            modalInstance.hide();
+          }
+          window.location.reload();
+        }, 5500);
+      } else {
+        setIsDeleteError(true);
+        setErrorMessage(response.error.response.data.error);
+        setIsDeleteStart(false);
+        toast.error(response.error.response.data.error);
+      }
+    } catch (error) {
+      setIsDeleteError(true);
+      setErrorMessage(error.response.data.message);
+      setIsDeleteStart(false);
+      toast.error(error.response.data.message);
+    }
+  };
 
   return (
     <div className="card mt-4" id="delete">
@@ -218,7 +266,34 @@ function DeleteAndDeactivate() {
                   state="morph-trash-in"
                   style={{ width: "50px", height: "50px" }}
                 ></lord-icon>
+                {isDeleteStart && (
+                  <div
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                  >
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                )}
               </button>
+            </div>
+            <div data-bs-theme="dark">
+              {isDeleteError && (
+                <div className="alert alert-danger mt-3 " role="alert">
+                  {errorMessage}
+                </div>
+              )}
+              {isDeleteSuccess && (
+                <>
+                  <div className="alert alert-success mt-3" role="alert">
+                    {successMessage}
+                  </div>
+                  <RedirectTo
+                    countDown={5}
+                    pageName={"Home"}
+                    redirectPage={"/"}
+                  />
+                </>
+              )}
             </div>
           </div>
         </div>

@@ -1,8 +1,13 @@
 import axios from "axios";
 
-const isDeployed = false;
-const baseURL = isDeployed ? "" : "http://localhost:3000/api/v1/";
+/* const isDeployed = true;
+const baseURL = isDeployed
+  ? "https://userandprofilemanagement-be.onrender.com/api/v1/"
+  : "http://localhost:3000/api/v1/"; */
 
+  const baseURL = import.meta.env.VITE_BASE_URL;
+
+  
 const authInstance = axios.create({
   baseURL: baseURL,
   timeout: 10000,

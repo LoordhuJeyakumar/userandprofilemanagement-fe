@@ -144,7 +144,7 @@ const LoginPage = () => {
                       <p className="mb-0 fw-semibold">Don't have an account?</p>
                       <Link
                         className="text-primary fw-bold ms-2 text-decoration-none"
-                        to={"/signup"}
+                        to={"/"}
                       >
                         Create an account
                       </Link>
